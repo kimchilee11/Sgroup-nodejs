@@ -1,0 +1,11 @@
+extends ../layout/main.pug
+
+block content
+    //- p Add new article
+    form(action="/"+data.title+"/update" method="get")
+        //- form(action="/"+data.title+"update" method="get")
+        h2 #{data.title}
+        div #{data.content}
+        button Edit
+block scripts
+    script(src='/js/article.js')

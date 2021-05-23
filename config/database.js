@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ArticleModel = require('../model/article');
 
-const database = async () => {
+ GetAll = async () => {
     try {
         await mongoose.connect('mongodb://localhost:27017/training', { 
             useNewUrlParser: true,
@@ -39,26 +39,17 @@ const database = async () => {
     }
 }
 
-const insert = async (title, content) => {
+GetOne = async(title) => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/training', { 
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        
-        await ArticleModel.insertMany([
-            {
-                title: title,
-                content : content
-            }
-        ])
+        var  data =await ArticleModel.findOne({ title  : title})
+        console.log(data);
+        return data;
     } catch (error) {
-        console.log('Huhuhu'+error);
-        process.exit(1);
+        console.log("ERROR : "+ error);
     }
 }
 
 module.exports = {
-    database,
-    insert
+    GetAll,
+    GetOne
 }
