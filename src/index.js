@@ -1,17 +1,18 @@
-const express = require('express');
-const {join, resolve} = require('path');
+import express from 'express'
+import { ArticleModel } from './config/database'
+import Article from './model/article'
+import {join} from 'path';
+import api from './api/index'
 
-const {GetAll, GetOne} = require('./config/database');
-const Article = require('./model/article');
-const {PORT} = require('./env');
-const { rejects } = require('assert');
+const PORT = 3000
+// import PORT from '../.env'
 var methodOverride = require('method-override')
 
 const PUBLIC_PATH = join(__dirname, 'public');
 
 const app = express();
 
-GetAll();
+ArticleModel.GetAll();
 
 app.set('view engine', 'pug');
 app.set('views', join(__dirname, 'views'));
@@ -25,18 +26,22 @@ app.use(express.static(PUBLIC_PATH, {
     maxAge: 8000
 }));
 
+app.use('/', api)
+
 // Pages
 app.get('/', 
-// (req, res, next) => {
-//     console.log("Go to middeware");
-//     return res.status(400).send('Dung o day')
-// },
 async (req, res) => {
     const articles = await Article.find();
     return res.render('pages/home.pug', {
         articles
     });
 })
+
+
+// app.get('/login', (req, res)=>{
+//     res.render('pages/login.pug')
+// })
+
 
 app.get('/articles/new', (req, res, next) => {
     return res.render('pages/newArticle.pug');
@@ -61,13 +66,13 @@ app.post('/articles', async (req, res) => {
 })
 
 app.get('/:title',async(req,res)  =>{
-    var data =  await GetOne(req.params.title);
-    // var title = article.title;
+    var data =  await ArticleModel.GetOne(req.params.title);
     res.render('pages/detailArticle.pug',
     {
         data
     });
 })
+
 var _id;
 app.get('/:title/update', async( req, res)=> {
     var article =  await GetOne(req.params.title);
@@ -79,7 +84,7 @@ app.get('/:title/update', async( req, res)=> {
     });
 })
 
-app.post('/:title/update', async( req, res)=> {
+app.put('/:title/update', async( req, res)=> {
     var article = req.body;
     var article = await Article.updateOne({_id},req.body);
     console.log("huhu"+article.title);

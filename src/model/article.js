@@ -5,4 +5,4 @@ const ArticleModel = model('articles', {
     content: String
 });
 
-module.exports = ArticleModel;
+export default ArticleModel;

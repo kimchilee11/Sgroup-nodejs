@@ -4,18 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon --exec babel-node  src/index.js",
+    "build:babel": "babel ./src --out-dir dist --copy-files",
+    "build": "yarn run clean && yarn run build:babel"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.12.9",
     "pug": "^3.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-stage-2": "^7.8.3",
     "nodemon": "^2.0.7"
   }
 }
